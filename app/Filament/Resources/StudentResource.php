@@ -14,6 +14,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -81,7 +83,21 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('nis')
+                    ->label('NIS')
+                    ->searchable(),
+                TextColumn::make('name')
+                    ->label('Name Student')
+                    ->searchable(),
+                TextColumn::make('gender')
+                    ->label('Gender')
+                    ->searchable(),
+                TextColumn::make('birthday')
+                    ->label('Date of Birth'),
+                TextColumn::make('religion')
+                    ->label('Religion')
+                    ->searchable(),
+                ImageColumn::make('profile')
             ])
             ->filters([
                 //
