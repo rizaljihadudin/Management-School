@@ -2,26 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PeriodeResource\Pages;
-use App\Filament\Resources\PeriodeResource\RelationManagers;
-use App\Models\Periode;
+use App\Filament\Resources\ClassroomResource\Pages;
+use App\Filament\Resources\ClassroomResource\RelationManagers;
+use App\Models\Classroom;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
-class PeriodeResource extends Resource
+class ClassroomResource extends Resource
 {
-    protected static ?string $model = Periode::class;
+    protected static ?string $model = Classroom::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $navigationLabel = 'Periode';
+    protected static ?string $navigationLabel = 'Classroom';
 
     protected static ?string $navigationGroup = 'Master Data';
 
@@ -29,9 +32,13 @@ class PeriodeResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->columnSpan(2),
+                Card::make()->schema([
+                    TextInput::make('name')
+                        ->live(debounce:500)
+                        ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                        ->required(),
+                    TextInput::make('slug')->readOnly(),
+                ])
             ]);
     }
 
@@ -39,9 +46,8 @@ class PeriodeResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label('Periode')
-                    ->searchable(),
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('slug'),
             ])
             ->filters([
                 //
@@ -60,7 +66,7 @@ class PeriodeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePeriodes::route('/'),
+            'index' => Pages\ManageClassrooms::route('/'),
         ];
     }
 }
