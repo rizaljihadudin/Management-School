@@ -34,7 +34,7 @@ class ClassroomResource extends Resource
             ->schema([
                 Card::make()->schema([
                     TextInput::make('name')
-                        ->live(debounce:500)
+                        ->reactive()
                         ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                         ->required(),
                     TextInput::make('slug')->readOnly(),
