@@ -16,6 +16,7 @@ use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\BulkAction;
@@ -118,11 +119,15 @@ class StudentResource extends Resource
                 ImageColumn::make('profile'),
                 TextColumn::make('status')
                     ->badge()
+                    ->formatStateUsing(function (string $state){
+                        return ucwords($state);
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'off'       => 'gray',
                         'move'      => 'warning',
                         'accept'    => 'success',
                         'grade'     => 'danger',
+
                 }),
             ])
             ->filters([
@@ -136,21 +141,43 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    BulkAction::make('Accept')
-                        ->icon('heroicon-m-check')
+                    BulkAction::make('Change Status')
+                        ->icon('heroicon-m-check-circle')
+                        ->color('success')
                         ->requiresConfirmation()
-                        ->action(function (Collection $records) {
-                            return $records->each->update(['status' => 'accept']);
-                        }),
-                    BulkAction::make('Off')
-                        ->icon('heroicon-m-x-circle')
-                        ->requiresConfirmation()
-                        ->action(function (Collection $records) {
-                            return $records->each->update(function ($record){
+                        ->form([
+                            Select::make('status')
+                                ->label('Status')
+                                ->options([
+                                    'accept'    => 'Accept',
+                                    'off'       => 'Off',
+                                    'move'      => 'Move',
+                                    'grade'     => 'Grade',
+                                ])
+                                ->required()
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $records->each(function ($record) use ($data) {
                                 $id = $record->id;
-                                Student::where('id', $id)->update(['status' => 'off']);
+                                Student::where('id', $id)->update(['status' => $data['status']]);
                             });
-                        }),
+
+                            Notification::make()
+                                ->title('Notification')
+                                ->success()
+                                ->body('Changes status successfully')
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    // BulkAction::make('Off')
+                    //     ->icon('heroicon-m-x-circle')
+                    //     ->requiresConfirmation()
+                    //     ->action(function (Collection $records) {
+                    //         return $records->each->update(function ($record){
+                    //             $id = $record->id;
+                    //             Student::where('id', $id)->update(['status' => 'off']);
+                    //         });
+                    //     }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
