@@ -12,6 +12,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
@@ -115,6 +119,7 @@ class StudentResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -134,10 +139,29 @@ class StudentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStudents::route('/'),
-            'create' => Pages\CreateStudent::route('/create'),
-            'edit' => Pages\EditStudent::route('/{record}/edit'),
+            'index'     => Pages\ListStudents::route('/'),
+            'create'    => Pages\CreateStudent::route('/create'),
+            'edit'      => Pages\EditStudent::route('/{record}/edit'),
+            'view'      => Pages\ViewStudent::route('/{record}')
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Profile Student')
+                    ->schema([
+                        TextEntry::make('nis')
+                            ->label('NIS'),
+                        TextEntry::make('name')
+                            ->label('Full Name'),
+                        ImageEntry::make('profile')
+                            ->label('Photo Profile')
+                            ->height(70)
+                            ->circular(),
+                    ])->columns(2),
+            ]);
     }
 
     public static function getLabel(): ?string
