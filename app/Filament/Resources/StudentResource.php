@@ -18,11 +18,13 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use stdClass;
 
@@ -113,7 +115,15 @@ class StudentResource extends Resource
                 TextColumn::make('religion')
                     ->label('Religion')
                     ->searchable(),
-                ImageColumn::make('profile')
+                ImageColumn::make('profile'),
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'off'       => 'gray',
+                        'move'      => 'warning',
+                        'accept'    => 'success',
+                        'grade'     => 'danger',
+                }),
             ])
             ->filters([
                 //
@@ -121,9 +131,26 @@ class StudentResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction::make('Accept')
+                        ->icon('heroicon-m-check')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records) {
+                            return $records->each->update(['status' => 'accept']);
+                        }),
+                    BulkAction::make('Off')
+                        ->icon('heroicon-m-x-circle')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records) {
+                            return $records->each->update(function ($record){
+                                $id = $record->id;
+                                Student::where('id', $id)->update(['status' => 'off']);
+                            });
+                        }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
@@ -156,10 +183,17 @@ class StudentResource extends Resource
                             ->label('NIS'),
                         TextEntry::make('name')
                             ->label('Full Name'),
+                        TextEntry::make('gender')
+                            ->label('Gender'),
+                        TextEntry::make('birthday')
+                            ->label('Date of Birth'),
+                        TextEntry::make('religion')
+                            ->label('Religion'),
                         ImageEntry::make('profile')
                             ->label('Photo Profile')
                             ->height(70)
-                            ->circular(),
+                            ->circular()
+                            ->columnSpan(2),
                     ])->columns(2),
             ]);
     }
