@@ -13,9 +13,14 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -207,24 +212,48 @@ class StudentResource extends Resource
     {
         return $infolist
             ->schema([
-                Section::make('Profile Student')
+                Section::make()
                     ->schema([
-                        TextEntry::make('nis')
-                            ->label('NIS'),
-                        TextEntry::make('name')
-                            ->label('Full Name'),
-                        TextEntry::make('gender')
-                            ->label('Gender'),
-                        TextEntry::make('birthday')
-                            ->label('Date of Birth'),
-                        TextEntry::make('religion')
-                            ->label('Religion'),
-                        ImageEntry::make('profile')
-                            ->label('Photo Profile')
-                            ->height(70)
-                            ->circular()
-                            ->columnSpan(2),
-                    ])->columns(2),
+                        Fieldset::make('Profile')
+                            ->schema([
+                                Split::make([
+                                    ImageEntry::make('profile')
+                                        ->hiddenLabel()
+                                        ->grow(false),
+                                    Grid::make(2)
+                                        ->schema([
+                                            Group::make([
+                                                TextEntry::make('nis'),
+                                                TextEntry::make('name'),
+                                                TextEntry::make('gender'),
+                                                TextEntry::make('birthday'),
+
+                                            ])
+                                            ->inlineLabel()
+                                            ->columns(1),
+
+                                            Group::make([
+                                                TextEntry::make('religion'),
+                                                TextEntry::make('contact'),
+                                                TextEntry::make('status')
+                                                ->badge()
+                                                ->color(fn (string $state): string => match ($state) {
+                                                    'accept' => 'success',
+                                                    'off' => 'danger',
+                                                    'grade' => 'success',
+                                                    'move' => 'warning',
+                                                    'wait' => 'gray'
+                                                }),
+                                                ViewEntry::make('QRCode')
+                                                    ->view('filament.resources.students.qrcode'),
+                                            ])
+                                            ->inlineLabel()
+                                            ->columns(1),
+                                    ])
+
+                                ])->from('lg')
+                            ])->columns(1)
+                    ])->columns(2)
             ]);
     }
 
