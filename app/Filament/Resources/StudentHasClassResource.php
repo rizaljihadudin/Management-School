@@ -27,8 +27,9 @@ class StudentHasClassResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationGroup = 'Academic';
 
+    protected static ?int $navigationSort = 3;
 
 
     public static function form(Form $form): Form

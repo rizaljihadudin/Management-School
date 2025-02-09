@@ -27,7 +27,9 @@ class CategoryNilaiResource extends Resource
     #devinisi label di sidebar
     protected static ?string $navigationLabel = 'Category Nilai';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationGroup = 'Source';
+
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {

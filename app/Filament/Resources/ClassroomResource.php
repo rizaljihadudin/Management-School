@@ -26,7 +26,9 @@ class ClassroomResource extends Resource
 
     protected static ?string $navigationLabel = 'Classroom';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationGroup = 'Source';
+
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
