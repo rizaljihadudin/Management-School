@@ -24,7 +24,7 @@
             </div>
 
             <ul
-                class='md:flex md:items-center z-[10] absolute md:z-auto md:static w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500 bg-slate-200 md:bg-transparent md:text-white'>
+                class='md:flex md:items-center z-[10] absolute md:z-auto md:static w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500 bg-slate-200 md:bg-transparent md:text-white cursor-pointer'>
                 <li class="hover:bg-slate-400 w-26 py-2 px-2 mx-2 rounded-full duration-500">Home</li>
                 <li class="hover:bg-slate-400 w-26 py-2 px-2 mx-2 rounded-full duration-500">About</li>
                 <li class="hover:bg-slate-400 w-26 py-2 px-2 mx-2 rounded-full duration-500">Register</li>

@@ -35,7 +35,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandLogo(asset('img/logo/mss-logo.png'))
+            ->brandLogoHeight('3rem')
             ->font('Inter', provider: GoogleFontProvider::class)
+            ->favicon(asset('img/logo/mss-logo.png'))
             ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
