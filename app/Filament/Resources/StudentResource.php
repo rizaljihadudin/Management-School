@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Filament\Resources\StudentResource\Widgets\StudentOverview;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -232,4 +233,5 @@ class StudentResource extends Resource
         $locale = app()->getLocale();
         return $locale == 'id' ? 'Siswa' : 'Students';
     }
+
 }
