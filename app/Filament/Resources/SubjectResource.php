@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SubjectResource\Pages;
 use App\Filament\Resources\SubjectResource\RelationManagers;
 use App\Models\Subject;
+use App\Models\Subjects;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
@@ -20,7 +21,7 @@ use Illuminate\Support\Str;
 
 class SubjectResource extends Resource
 {
-    protected static ?string $model = Subject::class;
+    protected static ?string $model = Subjects::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
 

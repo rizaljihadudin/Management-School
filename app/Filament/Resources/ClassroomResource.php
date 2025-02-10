@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClassroomResource\Pages;
 use App\Filament\Resources\ClassroomResource\RelationManagers;
+use App\Filament\Resources\TeacherResource\RelationManagers\ClassroomRelationManager;
 use App\Models\Classroom;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -24,7 +25,7 @@ class ClassroomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $navigationLabel = 'Classroom';
+    protected static ?string $navigationLabel = 'Class Room';
 
     protected static ?string $navigationGroup = 'Source';
 
@@ -34,21 +35,24 @@ class ClassroomResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()->schema([
+                Card::make()
+                ->schema([
                     TextInput::make('name')
                         ->reactive()
                         ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                         ->required(),
-                    TextInput::make('slug')->readOnly(),
-                ])
-            ]);
+                    TextInput::make('slug')
+                    ->readOnly(),
+            ])
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
+                TextColumn::make('name')
+                    ->searchable(),
                 TextColumn::make('slug'),
             ])
             ->filters([
@@ -65,10 +69,19 @@ class ClassroomResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            ClassroomRelationManager::class
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageClassrooms::route('/'),
+            'index' => Pages\ListClassrooms::route('/'),
+            'create' => Pages\CreateClassroom::route('/create'),
+            'edit' => Pages\EditClassroom::route('/{record}/edit'),
         ];
     }
 }
