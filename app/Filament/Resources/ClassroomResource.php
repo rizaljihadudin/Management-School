@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClassroomResource\Pages;
 use App\Filament\Resources\ClassroomResource\RelationManagers;
-use App\Filament\Resources\TeacherResource\RelationManagers\ClassroomRelationManager;
+use App\Filament\Resources\ClassroomResource\RelationManagers\SubjectsRelationManager;
 use App\Models\Classroom;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -60,7 +60,6 @@ class ClassroomResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -72,7 +71,7 @@ class ClassroomResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ClassroomRelationManager::class
+            SubjectsRelationManager::class
         ];
     }
 

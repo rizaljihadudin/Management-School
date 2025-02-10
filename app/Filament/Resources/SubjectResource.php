@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 
 class SubjectResource extends Resource
 {
-    protected static ?string $model = Subjects::class;
+    protected static ?string $model = Subject::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
 
