@@ -68,6 +68,7 @@ class ClassroomResource extends Resource
             ]);
     }
 
+    #relation
     public static function getRelations(): array
     {
         return [
