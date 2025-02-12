@@ -5,11 +5,13 @@ namespace App\Filament\Resources\ClassroomResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\AttachAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -50,13 +52,19 @@ class SubjectsRelationManager extends RelationManager
                     ->recordSelect(
                         fn (Select $select) => $select->placeholder('Select a Subject'),
                     )
+                    ->form(fn (AttachAction $action): array => [
+                        $action->getRecordSelect(),
+                        Textarea::make('description')
+                            ->rows(3)
+                            ->cols(5),
+                    ])
                     ->attachAnother(false)
         ,
             ])
             ->actions([
                 //Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
-                    ->label('Remove'),
+                    ->label('Detach'),
                 //Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -71,6 +79,12 @@ class SubjectsRelationManager extends RelationManager
                     ->recordSelect(
                         fn (Select $select) => $select->placeholder('Select a Subject'),
                     )
+                    ->form(fn (AttachAction $action): array => [
+                        $action->getRecordSelect(),
+                        Textarea::make('description')
+                            ->rows(10)
+                            ->cols(20),
+                    ])
             ]);
     }
 
