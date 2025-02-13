@@ -13,6 +13,7 @@ use App\Filament\Resources\StudentResource\Widgets\StatsOverview;
 use App\Filament\Resources\StudentResource\Widgets\StudentOverview;
 use App\Filament\Resources\SubjectResource;
 use App\Filament\Resources\TeacherResource;
+use App\Filament\Resources\UserResource;
 use App\Models\Periode;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
@@ -134,6 +135,7 @@ class AdminPanelProvider extends PanelProvider
                                     'filament.admin.resources.permissions.view',
                                 ]))
                                 ->url(fn (): string => '/admin/permissions'),
+                            ...UserResource::getNavigationItems(),
                         ]),
                 ]);
             })
