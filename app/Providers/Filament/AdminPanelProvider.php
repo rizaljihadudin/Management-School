@@ -139,6 +139,7 @@ class AdminPanelProvider extends PanelProvider
                         ]),
                 ]);
             })
+            ->databaseNotifications()
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
