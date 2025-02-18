@@ -14,8 +14,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Support\Facades\Auth;
 
-class User extends Authenticatable implements HasTenants
+class User extends Authenticatable implements HasTenants, FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -77,5 +79,19 @@ class User extends Authenticatable implements HasTenants
     public function team(): BelongsToMany
     {
         return $this->belongsToMany(Team::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        $user   = Auth::user();
+        $roles  = $user->getRoleNames();
+
+        if($panel->getId() === 'admin' && $roles->contains('admin')) {
+            return true;
+        }else if($panel->getId() === 'student' && $roles->contains('student')) {
+            return true;
+        }
+
+        return false;
     }
 }
