@@ -85,12 +85,12 @@ class UserResource extends Resource
     }
 
     #query untuk menampilkan data di view table.
-    public static function getEloquentQuery(): Builder
-    {
-        $admins = User::whereHas('roles', function ($query) {
-            $query->where('name', 'admin');
-        })->get()->pluck('id');
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     $admins = User::whereHas('roles', function ($query) {
+    //         $query->where('name', 'admin');
+    //     })->get()->pluck('id');
 
-        return parent::getEloquentQuery()->whereNotIn('id', $admins);
-    }
+    //     return parent::getEloquentQuery()->whereNotIn('id', $admins);
+    // }
 }

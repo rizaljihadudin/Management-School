@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use App\Filament\Pages\Tenancy\RegisterTeam;
 use App\Filament\Resources\CategoryNilaiResource;
 use App\Filament\Resources\ClassroomResource;
 use App\Filament\Resources\DepartmentResource;
@@ -15,6 +16,8 @@ use App\Filament\Resources\SubjectResource;
 use App\Filament\Resources\TeacherResource;
 use App\Filament\Resources\UserResource;
 use App\Models\Periode;
+use App\Models\Team;
+use Filament\Facades\Filament;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -24,6 +27,7 @@ use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
+use Filament\Navigation\UserMenuItem;
 use Filament\Pages;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
@@ -59,12 +63,12 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
-            ->userMenuItems([
-                MenuItem::make()
-                    ->label('Settings')
-                    ->url(fn (): string => PeriodeResource::getUrl())
-                    ->icon('heroicon-o-cog-6-tooth'),
-            ])
+            // ->userMenuItems([
+            //     MenuItem::make()
+            //         ->label('Settings')
+            //         ->url(fn (): string => PeriodeResource::getUrl())
+            //         ->icon('heroicon-o-cog-6-tooth'),
+            // ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -91,6 +95,9 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
+            ->tenant(Team::class)
+            ->tenantRegistration(RegisterTeam::class)
+
             #for navigation group
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->groups([
@@ -142,4 +149,18 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
+
+    public function boot(): void
+    {
+        Filament::serving(function () {
+            Filament::registerUserMenuItems([
+                UserMenuItem::make()
+                    ->label('Settings')
+                    ->url(fn (): string => PeriodeResource::getUrl(parameters: ['tenant' => Filament::getTenant()]))
+                    ->icon('heroicon-o-cog-6-tooth'),
+            ]);
+        });
+    }
+
+
 }
