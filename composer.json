@@ -11,8 +11,10 @@
         "bezhansalleh/filament-language-switch": "^3.1",
         "filament/filament": "^3.2",
         "filament/infolists": "^3.2",
+        "filament/notifications": "^3.2",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "livewire/livewire": "^3.5",
         "maatwebsite/excel": "*",
         "spatie/laravel-permission": "^6.13"
     },

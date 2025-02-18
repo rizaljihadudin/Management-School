@@ -115,7 +115,10 @@ class StudentResource extends Resource
                     ->searchable(),
                 TextColumn::make('name')
                     ->label('Name Student')
-                    ->searchable(),
+                    ->searchable()
+                    ->formatStateUsing(function (string $state){
+                        return ucwords($state);
+                    }),
                 TextColumn::make('gender')
                     ->label('Gender')
                     ->searchable(),
@@ -138,8 +141,9 @@ class StudentResource extends Resource
 
                 }),
             ])
+            ->defaultSort('name', 'asc')
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
