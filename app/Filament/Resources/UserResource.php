@@ -19,6 +19,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
+use Phpsa\FilamentPasswordReveal\Password;
+
+use function PHPSTORM_META\type;
 
 class UserResource extends Resource
 {
@@ -28,6 +31,8 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $hide = 'heroicon-o-eye-slash';
+        $icon = 'heroicon-o-eye';
         return $form
             ->schema([
                 Card::make()
@@ -37,8 +42,15 @@ class UserResource extends Resource
                     TextInput::make('email')
                         ->email()
                         ->required(),
-                    TextInput::make('password')
-                        ->password()
+                    // Password::make('password')
+                    //     ->showIcon('heroicon-o-eye')
+                    //     ->password()
+                    //     ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                    //     ->dehydrated(fn (?string $state): bool => filled($state))
+                    //     ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord),
+                    Password::make('password')
+                        ->showIcon($icon)
+                        ->hideIcon($hide)
                         ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord),

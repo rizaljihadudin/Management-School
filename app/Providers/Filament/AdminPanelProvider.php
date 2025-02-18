@@ -96,9 +96,9 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
-            ->tenant(Team::class)
-            ->tenantRegistration(RegisterTeam::class)
-            ->tenantProfile(EditTeamProfile::class)
+            // ->tenant(Team::class)
+            // ->tenantRegistration(RegisterTeam::class)
+            // ->tenantProfile(EditTeamProfile::class)
 
             #for navigation group
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
@@ -156,10 +156,10 @@ class AdminPanelProvider extends PanelProvider
     {
         Filament::serving(function () {
             Filament::registerUserMenuItems([
-                UserMenuItem::make()
-                    ->label('Settings')
-                    ->url(fn (): string => PeriodeResource::getUrl(parameters: ['tenant' => Filament::getTenant()]))
-                    ->icon('heroicon-o-cog-6-tooth'),
+                // UserMenuItem::make()
+                //     ->label('Settings')
+                //     ->url(fn (): string => PeriodeResource::getUrl(parameters: ['tenant' => Filament::getTenant()]))
+                //     ->icon('heroicon-o-cog-6-tooth'),
             ]);
         });
     }
