@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use App\Filament\Pages\Tenancy\EditTeamProfile;
 use App\Filament\Pages\Tenancy\RegisterTeam;
 use App\Filament\Resources\CategoryNilaiResource;
 use App\Filament\Resources\ClassroomResource;
@@ -97,6 +98,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->tenant(Team::class)
             ->tenantRegistration(RegisterTeam::class)
+            ->tenantProfile(EditTeamProfile::class)
 
             #for navigation group
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
