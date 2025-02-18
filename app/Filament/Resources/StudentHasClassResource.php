@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentHasClassResource\Pages;
 use App\Filament\Resources\StudentHasClassResource\RelationManagers;
+use App\Models\Classroom;
 use App\Models\HomeRoom;
 use App\Models\Periode;
 use App\Models\Student;
@@ -17,6 +18,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -41,9 +43,9 @@ class StudentHasClassResource extends Resource
                         ->searchable()
                         ->options(Student::all()->pluck('name', 'id'))
                         ->label('Student'),
-                    Select::make('homerooms_id')
+                    Select::make('classrooms_id')
                         ->searchable()
-                        ->options(HomeRoom::all()->pluck('classroom.name', 'id'))
+                        ->options(Classroom::all()->pluck('name', 'id'))
                         ->label('Class'),
                     Select::make('periode_id')
                         ->label('Periode')
@@ -59,11 +61,20 @@ class StudentHasClassResource extends Resource
             ->columns([
                 TextColumn::make('students.name')
                     ->searchable(),
-                TextColumn::make('homeroom.classroom.name')
+                TextColumn::make('classrooms.name')
                     ->searchable(),
+                TextColumn::make('periode.name')
             ])
             ->filters([
-                //
+                SelectFilter::make('classrooms_id')
+                    ->label('Classrooms')
+                    ->options(Classroom::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->multiple(),
+                SelectFilter::make('periode_id')
+                    ->label('Periode')
+                    ->options(Periode::all()->pluck('name', 'id'))
+                    ->searchable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
