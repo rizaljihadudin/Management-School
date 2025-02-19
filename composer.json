@@ -17,6 +17,7 @@
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "*",
         "phpsa/filament-password-reveal": "^2.1",
+        "saade/filament-adjacency-list": "^3.2",
         "spatie/laravel-permission": "^6.13"
     },
     "require-dev": {
