@@ -8,6 +8,7 @@ use App\Filament\Pages\Tenancy\RegisterTeam;
 use App\Filament\Resources\CategoryNilaiResource;
 use App\Filament\Resources\ClassroomResource;
 use App\Filament\Resources\DepartmentResource;
+use App\Filament\Resources\NilaiResource;
 use App\Filament\Resources\PeriodeResource;
 use App\Filament\Resources\StudentHasClassResource;
 use App\Filament\Resources\StudentResource;
@@ -109,6 +110,10 @@ class AdminPanelProvider extends PanelProvider
                                 ->icon('heroicon-o-home')
                                 ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
                                 ->url(fn (): string => Dashboard::getUrl()),
+                            NavigationItem::make('Nilai')
+                                ->icon('heroicon-o-clipboard-document-list')
+                                ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.nilai.index'))
+                                ->url(fn (): string => NilaiResource::getUrl()),
                         ]),
                     NavigationGroup::make('Academic')
                         ->items([

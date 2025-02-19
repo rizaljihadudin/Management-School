@@ -86,7 +86,7 @@ class User extends Authenticatable implements HasTenants, FilamentUser
         $user   = Auth::user();
         $roles  = $user->getRoleNames();
 
-        if($panel->getId() === 'admin' && $roles->contains('admin')) {
+        if($panel->getId() === 'admin' && $roles->contains('admin') || $roles->contains('teacher')) {
             return true;
         }else if($panel->getId() === 'student' && $roles->contains('student')) {
             return true;
