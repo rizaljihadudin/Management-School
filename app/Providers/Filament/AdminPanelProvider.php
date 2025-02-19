@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 use App\Filament\Pages\Tenancy\EditTeamProfile;
 use App\Filament\Pages\Tenancy\RegisterTeam;
+use App\Filament\Resources\AdjacencyResource;
 use App\Filament\Resources\CategoryNilaiResource;
 use App\Filament\Resources\ClassroomResource;
 use App\Filament\Resources\DepartmentResource;
@@ -17,6 +18,7 @@ use App\Filament\Resources\StudentResource\Widgets\StudentOverview;
 use App\Filament\Resources\SubjectResource;
 use App\Filament\Resources\TeacherResource;
 use App\Filament\Resources\UserResource;
+use App\Models\Adjacency;
 use App\Models\Periode;
 use App\Models\Team;
 use Filament\Facades\Filament;
@@ -114,6 +116,10 @@ class AdminPanelProvider extends PanelProvider
                                 ->icon('heroicon-o-clipboard-document-list')
                                 ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.nilai.index'))
                                 ->url(fn (): string => NilaiResource::getUrl()),
+                            NavigationItem::make('Adjacency')
+                                ->icon('heroicon-o-clipboard-document-list')
+                                ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.adjacency.index'))
+                                ->url(fn (): string => AdjacencyResource::getUrl()),
                         ]),
                     NavigationGroup::make('Academic')
                         ->items([
