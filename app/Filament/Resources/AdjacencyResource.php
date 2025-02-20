@@ -15,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Contracts\View\View;
 use Saade\FilamentAdjacencyList\Forms\Components\AdjacencyList;
 
 class AdjacencyResource extends Resource
@@ -51,6 +52,10 @@ class AdjacencyResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('detail')
+                    ->icon('heroicon-o-eye')
+                    ->modalContent(fn (Adjacency $record): View => view('filament.pages.actions.adjacency', ['record' => $record]))
+                    ->modalSubmitAction(false),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
