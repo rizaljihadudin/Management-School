@@ -10,6 +10,7 @@ use App\Models\Nilai;
 use App\Models\Periode;
 use App\Models\Student;
 use App\Models\Subject;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
@@ -54,6 +55,15 @@ class NilaiResource extends Resource
                         ->label('Student')
                         ->searchable(),
                     TextInput::make('nilai')
+                        ->type('number')
+                        ->live()
+                        ->rules([
+                            fn (): Closure => function (string $attribute, $value, Closure $fail){
+                                if (intval($value) > 100) {
+                                    $fail(':attribute more than 100.');
+                                }
+                            },
+                        ])
                 ])->columns(3)
             ]);
     }

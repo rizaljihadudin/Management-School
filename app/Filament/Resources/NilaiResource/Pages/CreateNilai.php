@@ -9,6 +9,7 @@ use App\Models\Nilai;
 use App\Models\Periode;
 use App\Models\Student;
 use App\Models\Subject;
+use Closure;
 use Filament\Actions;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Repeater;
@@ -85,6 +86,13 @@ class CreateNilai extends CreateRecord
                                             })
                                         ->label('Student'),
                                     TextInput::make('nilai')
+                                            ->rules([
+                                                fn (): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                                    if (intval($value) > 100) {
+                                                        $fail(':attribute more than 100.');
+                                                    }
+                                                },
+                                            ])
                                 ])->columns(2),
                         ])
             ]);
